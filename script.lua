@@ -2,18 +2,12 @@ local username = get("username-input")
 local password = get("password-input")
 
 local loginbutton = get("login")
-local registerbutton = get("register")
 
 local result = get("result")
 local messagesitem = get("messages")
 local publicChat = get("public-chat")
 
-local sendUsername = get("send-username")
-local sendMessage = get("send-message")
-local privateSendButton = get("privatesend")
-
 local publicMessage = get("publicsend-message")
-local publicSendButton = get("publicsend")
 
 local refreshButton = get("refresh")
 
@@ -92,64 +86,6 @@ loginbutton.on_click(function()
     end
 end)
 
-registerbutton.on_click(function()
-    local body = "{"
-        .. '"username": "'
-        .. username.get_content()
-        .. '", '
-        .. '"password": "'
-        .. password.get_content()
-        .. '"'
-        .. "}"
-    print(body)
-    local res = fetch({
-        url = "https://chat.smartlinux.xyz/api/register",
-        method = "POST",
-        headers = { ["Content-Type"] = "application/json" },
-        body = body,
-    })
-    if res.status == 201 then
-        result.set_content("You registered successfully, you can now login")
-    else
-        result.set_content("Username taken")
-    end
-end)
-
-privateSendButton.on_click(function()
-    local body = "{"
-        .. '"receiver": "'
-        .. sendUsername.get_content()
-        .. '", '
-        .. '"message": "'
-        .. sendMessage.get_content()
-        .. '"'
-        .. "}"
-    print(body)
-    local res = fetch({
-        url = "https://chat.smartlinux.xyz/api/send",
-        method = "POST",
-        headers = { 
-            ["Content-Type"] = "application/json",
-            ["Authorization"] = token 
-        },
-        body = body,
-    })
-    if res.status == 200 then
-        result.set_content("Message sent successfully")
-        local messages = fetch({
-            url = "https://chat.smartlinux.xyz/api/messages",
-            method = "GET",
-            headers = { 
-                ["Content-Type"] = "application/json",
-                ["Authorization"] = token 
-            },
-        })
-        messagesitem.set_content(formatMessages(messages.messages))
-    else
-        result.set_content("Cannot send message")
-    end
-end)
-
 publicSendButton.on_click(function()
     local body = "{"
         .. '"message": "'
@@ -158,8 +94,8 @@ publicSendButton.on_click(function()
         .. "}"
     print(body)
     local res = fetch({
-        url = "https://chat.smartlinux.xyz/api/public-message",
-        method = "POST",
+        url = "https://chat.smartlinux.xyz/api/delete-message/" .. publicMessage.get_content(),
+        method = "DELETE",
         headers = { 
             ["Content-Type"] = "application/json",
             ["Authorization"] = token 
@@ -167,7 +103,7 @@ publicSendButton.on_click(function()
         body = body,
     })
     if res.status == 200 then
-        result.set_content("Public message sent successfully")
+        result.set_content("message deleted successfully")
         local messages = fetch({
             url = "https://chat.smartlinux.xyz/api/public-messages",
             method = "GET",
