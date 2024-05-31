@@ -9,6 +9,8 @@ local publicChat = get("public-chat")
 
 local publicMessage = get("publicsend-message")
 
+local publicSendButton = get("publicsend")
+
 local refreshButton = get("refresh")
 
 local token
@@ -87,16 +89,21 @@ loginbutton.on_click(function()
 end)
 
 publicSendButton.on_click(function()
+    local body = "{"
+        .. '"messageId": "'
+        .. publicMessage.get_content()
+        .. '"'
+        .. "}"
+    print(body)
     local res = fetch({
-        url = "https://chat.smartlinux.xyz/api/delete-message/" .. publicMessage.get_content(),
-        method = "DELETE",
+        url = "https://chat.smartlinux.xyz/api/delete-message/",
+        method = "GET",
         headers = { 
             ["Content-Type"] = "application/json",
             ["Authorization"] = token 
         },
-        
+        body = body,
     })
-    print(res)
     if res.status == 200 then
         result.set_content("message deleted successfully")
         local messages = fetch({
