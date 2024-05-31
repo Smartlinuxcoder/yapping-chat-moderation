@@ -116,7 +116,7 @@ publicSendButton.on_click(function()
         })
         publicChat.set_content(formatMessages(messages.messages))
     else
-        result.set_content("Cannot send public message")
+        result.set_content(res)
     end
 end)
 
