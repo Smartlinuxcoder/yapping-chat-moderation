@@ -96,14 +96,14 @@ publicSendButton.on_click(function()
         .. "}"
     print(body)
     local res = fetch({
-        url = "https://chat.smartlinux.xyz/api/delete-message/",
+        url = "https://chat.smartlinux.xyz/api/delete-message",
         method = "POST",
-        headers = { 
-            ["Content-Type"] = "application/json",
-            ["Authorization"] = token 
-        },
+        headers = { ["Content-Type"] = "application/json",
+                    ["Authorization"] = token 
+                },
         body = body,
     })
+    print(res)
     if res.status == 200 then
         result.set_content("message deleted successfully")
         local messages = fetch({
