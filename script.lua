@@ -150,7 +150,7 @@ end)
 
 userDeleteButton.on_click(function()
     local body = "{"
-        .. '"userId": "'
+        .. '"username": "'
         .. userId.get_content()
         .. '"'
         .. "}"
