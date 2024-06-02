@@ -169,3 +169,4 @@ userDeleteButton.on_click(function()
     else
         result.set_content(res)
     end
+end)
