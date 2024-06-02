@@ -13,6 +13,11 @@ local publicSendButton = get("publicsend")
 
 local refreshButton = get("refresh")
 
+local userDeleteButton = get("delete-user")
+
+local userId = get("user-id")
+
+
 local token
 
 result.set_content(".")
@@ -142,3 +147,25 @@ refreshButton.on_click(function()
 
     result.set_content("Refreshed")
 end)
+
+userDeleteButton.on_click(function()
+    local body = "{"
+        .. '"userId": "'
+        .. userId.get_content()
+        .. '"'
+        .. "}"
+    print(body)
+    local res = fetch({
+        url = "https://chat.smartlinux.xyz/api/delete-user",
+        method = "POST",
+        headers = { ["Content-Type"] = "application/json",
+                    ["Authorization"] = token 
+                },
+        body = body,
+    })
+    print(res)
+    if res.status == 200 then
+        result.set_content("user deleted successfully")
+    else
+        result.set_content(res)
+    end
